@@ -5,16 +5,16 @@ import 'package:notes_app/models/notes_model.dart';
 import 'package:notes_app/widgets/custom_button.dart';
 import 'package:notes_app/widgets/customtextfeild.dart';
 
-class AddNotesForm extends StatefulWidget {
-  const AddNotesForm({
-    super.key,
-  });
+class AddNoteForm extends StatefulWidget {
+  const AddNoteForm({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<AddNotesForm> createState() => _AddNotesFormState();
+  State<AddNoteForm> createState() => _AddNoteFormState();
 }
 
-class _AddNotesFormState extends State<AddNotesForm> {
+class _AddNoteFormState extends State<AddNoteForm> {
   final GlobalKey<FormState> formKey = GlobalKey();
 
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
@@ -31,20 +31,23 @@ class _AddNotesFormState extends State<AddNotesForm> {
             height: 32,
           ),
           CustomTextField(
-            hint: 'Title',
             onSaved: (value) {
               title = value;
             },
+            hint: 'title',
           ),
           const SizedBox(
-            height: 10,
+            height: 16,
           ),
           CustomTextField(
-            hint: 'Content',
-            lines: 5,
             onSaved: (value) {
               subTitle = value;
             },
+            hint: 'content',
+            lines: 5,
+          ),
+          const SizedBox(
+            height: 32,
           ),
           const SizedBox(
             height: 32,
@@ -56,12 +59,15 @@ class _AddNotesFormState extends State<AddNotesForm> {
                 onTap: () {
                   if (formKey.currentState!.validate()) {
                     formKey.currentState!.save();
+
+                    var currentDate = DateTime.now();
+
                     var noteModel = NotesModel(
                         title: title!,
                         subTitle: subTitle!,
                         date: DateTime.now().toString(),
-                        color: Colors.blueGrey.value);
-                    BlocProvider.of<AddNoteCubit>(context).AddNote(noteModel);
+                        color: Colors.blue.value);
+                    BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
                   } else {
                     autovalidateMode = AutovalidateMode.always;
                     setState(() {});
@@ -71,7 +77,7 @@ class _AddNotesFormState extends State<AddNotesForm> {
             },
           ),
           const SizedBox(
-            height: 10,
+            height: 16,
           ),
         ],
       ),
